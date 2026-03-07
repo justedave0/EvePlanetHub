@@ -1,63 +1,45 @@
 # EvePlanetHub
 
-## Project Overview
+A platform for managing planetary resources and space exploration.
 
-EvePlanetHub is a full-stack web application for managing EVE Online planetary interactions.
+## Project Structure
 
-## Architecture
+- `backend/` - Python Flask API with PostgreSQL database
+- `frontend/` - React.js single page application  
+- `docs/` - Documentation files
+- `scripts/` - Helper scripts
 
-- **Backend**: FastAPI (Python) running on port 8000
-- **Frontend**: React application running on port 3000  
-- **Database**: PostgreSQL (PostgreSQL 15) on port 5432
-- **Containerization**: Docker Compose
-
-## Setup Instructions
+## Development Setup
 
 ### Prerequisites
-- Docker Desktop installed and running
-- Git installed
+
+- Docker and Docker Compose
 
 ### Getting Started
 
 1. Clone the repository
-2. Navigate to project directory: `cd EvePlanetHub`
-3. Start all containers: `docker-compose up -d`
+2. Run `docker-compose up --build` to start all services
 
-### Accessing Services
-
+The application will be available at:
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000
-- Database: postgresql://localhost:5432/eveplanethub
 
-## Troubleshooting
+## Directory Structure
 
-### Common Issues
-
-1. **TypeScript errors with `process.env`**:
-   - Solution: The tsconfig.json includes proper Node.js type definitions and api.ts was modified to handle environment variables safely
-   - No `npm install` needed for Docker build
-
-2. **Frontend fails on "Could not find index.html"**:
-   - Solution: Fixed by creating a proper multistage Dockerfile that builds the React app before serving it with nginx
-
-3. **Docker commands failing in PowerShell**:
-   - Use Windows Command Prompt (cmd) instead of PowerShell for better compatibility
-   - Run commands one-by-one instead of chaining with `&&`
-
-### Building and Running
-
-Use these commands in Windows Command Prompt (cmd):
-```cmd
-cd C:\dev\EvePlanetHub
-docker-compose up -d
+```
+.
+├── backend/           # Python Flask API
+│   ├── api/           # API endpoints
+│   ├── src/           # Source code
+│   └── tests/         # Test suite
+├── frontend/          # React frontend 
+│   ├── public/        # Static files
+│   └── src/           # React components
+├── docs/              # Documentation
+└── scripts/           # Helper scripts
 ```
 
-To view logs:
-```cmd
-docker-compose logs -f
-```
+## Notes
 
-To stop containers:
-```cmd
-docker-compose down
-```
+- The frontend uses a multi-stage Docker build to create a lightweight production environment
+- The backend API is configured with PostgreSQL database
