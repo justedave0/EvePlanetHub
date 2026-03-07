@@ -10,7 +10,7 @@ services:
     volumes:
       - ./backend:/app
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/eveplanethub
+      - DATABASE_URL=postgresql+asyncpg://user:password@db:5432/eveplanethub
       - ENV=development
     depends_on:
       - db

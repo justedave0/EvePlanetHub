@@ -4,7 +4,7 @@ A platform for managing planetary resources and space exploration.
 
 ## Project Structure
 
-- `backend/` - Python Flask API with PostgreSQL database
+- `backend/` - Python FastAPI with PostgreSQL database
 - `frontend/` - React.js single page application  
 - `docs/` - Documentation files
 - `scripts/` - Helper scripts
@@ -23,6 +23,21 @@ A platform for managing planetary resources and space exploration.
 The application will be available at:
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000
+
+## Database Migrations
+
+Database migrations are automatically applied when the backend starts up. 
+To manually run migrations, use:
+
+```bash
+# Run migrations
+python -m alembic upgrade head
+
+# Rollback migrations  
+python -m alembic downgrade -1
+```
+
+The migration system uses Alembic to manage schema changes and is integrated into the application startup process.
 
 ## Directory Structure
 

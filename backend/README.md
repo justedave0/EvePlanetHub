@@ -1,64 +1,51 @@
 # EvePlanetHub Backend
 
-FastAPI backend service for EvePlanetHub application.
-
-## Setup
-
-1. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   ```
-
-2. Activate virtual environment:
-   - Windows: `venv\Scripts\activate`
-   - Linux/macOS: `source venv/bin/activate`
-
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Running the Application
-
-### Development
-```bash
-uvicorn main:app --reload
-```
-
-### Docker
-```bash
-docker build -t eveplanethub-backend .
-docker run -p 8000:8000 eveplanethub-backend
-```
-
-## Testing
-
-Run tests:
-```bash
-pytest tests/
-```
-
-## API Documentation
-
-The API documentation will be available at:
-- `http://localhost:8000/docs`
-- `http://localhost:8000/redoc`
-
-## Environment Variables
-
-Create a `.env` file in the root of the backend directory with:
-```
-DATABASE_URL=postgresql://user:password@db:5432/eveplanethub
-ENV=development
-```
+This is the Python FastAPI backend for the EvePlanetHub platform with PostgreSQL integration.
 
 ## Project Structure
 
 ```
-src/
-├── api/              # API routes and endpoints
-├── models/           # Data models (ORM)
-├── services/         # Business logic
-├── database/         # Database connection code
-└── utils/            # Utility functions
+.
+├── api/           # API endpoint definitions
+├── src/           # Source code
+│   ├── database/  # Database connection and migration logic  
+│   ├── models/    # SQLAlchemy models
+│   └── services/  # Business logic
+├── tests/         # Test suite
+└── alembic/       # Migration scripts
 ```
+
+## Database Migrations
+
+Database migrations are automatically applied when the backend starts up. The system uses Alembic to manage schema changes.
+
+### Running Migrations
+
+Migrations can be run manually using:
+
+```bash
+# Run all pending migrations
+python -m alembic upgrade head
+
+# Rollback last migration 
+python -m alembic downgrade -1
+
+# Create a new migration
+python -m alembic revision --autogenerate -m "Description of changes"
+```
+
+### Migration Process
+
+1. When the application starts, `startup` event triggers database checks
+2. The system verifies database connection is available  
+3. All pending migrations are applied automatically
+4. Application continues to serve requests after successful migration
+
+## Dependencies
+
+- FastAPI
+- SQLAlchemy (async)
+- Alembic (for migrations) 
+- PostgreSQL driver (psycopg2)
+
+The setup handles database connection management and migration in a production-ready way.
