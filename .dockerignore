@@ -1,0 +1,36 @@
+# Ignore git and version control directories
+.git
+.gitignore
+README.md
+*.md
+
+# Ignore node_modules in root directory (if any)
+node_modules
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignore test and coverage reports
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore Docker build cache
+.dockerignore
+Dockerfile*
