@@ -27,27 +27,5 @@ app.include_router(users_router, prefix="/api/v1/users", tags=["Users"])
 async def root():
     return {"message": "Welcome to EvePlanetHub API"}
 
-# Simplify the startup event to only check connection 
-@app.on_event("startup")
-async def startup_event():
-    """Simple startup - just verify database connection works"""
-    try:
-        from src.database.session import engine
-        from sqlalchemy import text
-        
-        print("Starting application...")
-        
-        # Simple database connection check
-        async with engine.connect() as conn:
-            await conn.execute(text("SELECT 1"))
-            
-        print("Database connection successful!")
-        print("Application started successfully!") 
-        
-    except Exception as e:
-        print(f"Failed to initialize application: {e}")
-        raise
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# Remove the startup event - let's use a more robust approach by
+# using an external startup script with retry logic
