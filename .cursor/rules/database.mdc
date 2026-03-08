@@ -1,0 +1,81 @@
+---
+name: "Database Schema and Query Patterns"
+type: "rule"
+author: "Cursor IDE Best Practices 2026"
+version: "1.0.0"
+description: |
+  Database design and query conventions for Cursor IDE projects in 2026.
+  Establishes consistent patterns for schema definition, queries, and data access.
+---
+
+## Schema Design
+
+### Naming Conventions
+- Use lowercase with underscores for table names: `user_profiles`, `order_items`
+- Use snake_case for column names
+- Follow PostgreSQL naming standards:
+  - Primary keys: `id`
+  - Foreign keys: `{table}_id` 
+  - Timestamps: `created_at`, `updated_at`
+
+### Column Types
+```sql
+-- Example schema with proper types
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  name TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+## Query Patterns
+
+### SQL Queries
+- Use parameterized queries to prevent SQL injection
+- Implement proper indexing strategies
+- Keep queries simple and focused
+- Use transactions for related operations
+
+### ORMs (when applicable)
+- Use Sequelize or Prisma as primary ORM tools
+- Follow consistent naming conventions
+- Implement proper error handling
+- Use migrations for schema changes
+
+## Data Access Layer
+
+### Repository Pattern  
+- Separate data access logic from business logic
+- Implement consistent CRUD operations
+- Use transactions for complex operations
+- Handle errors gracefully with appropriate logging
+
+### Configuration Best Practices
+- Connection pool settings must be validated:
+  - Pool size should be calculated based on expected concurrent connections
+  - Connection timeout values must align with upstream service timeouts
+  - Idle connection settings should maintain resource efficiency without causing churn
+- All database configuration values should have justification documentation
+- Environment-specific database configurations should be managed through secure, version-controlled methods
+
+### Example Implementation
+```javascript
+// User repository example
+class UserRepository {
+  async findById(id) {
+    const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    return user.rows[0];
+  }
+
+  async create(userData) {
+    const result = await db.query(
+      'INSERT INTO users (email, name) VALUES ($1, $2) RETURNING *',
+      [userData.email, userData.name]
+    );
+    return result.rows[0];
+  }
+}
+```
+```

@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "enabled": true,
+    "path": "./rules",
+    "autoReload": true
+  },
+  "mcp": {
+    "servers": [
+      "github",
+      "filesystem",
+      "chrome-devtools",
+      "brave-search",
+      "exa"
+    ]
+  }
+}

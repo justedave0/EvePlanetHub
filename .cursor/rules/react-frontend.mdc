@@ -1,0 +1,193 @@
+---
+name: "React Frontend Development Best Practices"
+type: "rule"
+author: "Cursor IDE Best Practices 2026"
+version: "1.0.0"
+description: |
+  Comprehensive React development guidelines for Cursor IDE projects in 2026.
+  Covers coding standards, component structure, testing practices, and performance optimization.
+---
+
+## React Component Architecture
+
+### File Structure
+- Place components in `src/components/` directory
+- Use PascalCase for component names: `UserCard.jsx`, `LoginForm.tsx`
+- Separate container and presentational components appropriately
+- Keep components small and focused (max 200 lines)
+
+### TypeScript Usage
+```typescript
+// Interface definitions for props
+interface UserCardProps {
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  onClick?: () => void;
+  loading?: boolean;
+}
+
+const UserCard: React.FC<UserCardProps> = ({ user, onClick, loading }) => {
+  // Component implementation
+};
+
+export default UserCard;
+```
+
+## Code Quality Standards
+
+### Hooks Usage
+- Follow hook naming conventions: `useFetchData`, `useLocalStorage`
+- Place hooks at the top of functional components
+- Use custom hooks to encapsulate complex logic
+- Avoid conditional hook calls
+
+```typescript
+// Good
+const [data, setData] = useState(null);
+const isLoading = useLoading();
+const userData = useFetchUser(id);
+
+// Avoid
+if (condition) {
+  const [data, setData] = useState(null);
+}
+```
+
+### State Management
+- Use React's built-in state for simple UI state
+- Implement context for cross-component communication
+- Use Redux Toolkit or Zustand for complex global state
+- Memoize expensive calculations with `useMemo`
+- Avoid unnecessary re-renders with `useCallback`
+
+## Performance Optimization
+
+### Component Rendering
+- Use React.memo for pure components
+- Implement virtualized lists for large datasets
+- Lazy load components using React.lazy
+- Optimize images and assets appropriately
+
+### Data Fetching
+```typescript
+// Use useEffect with proper cleanup
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await api.fetchUsers();
+      setUsers(response.data);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  fetchData();
+
+  return () => {
+    // Cleanup function
+  };
+}, []);
+```
+
+## Naming Conventions
+
+### Variable and Function Names
+- Use camelCase for variables: `currentUser`, `handleClick`
+- Use PascalCase for components: `UserCard`, `LoginForm`
+- Use UPPER_CASE for constants: `API_URL`, `MAX_RETRY_COUNT`
+
+### File Names
+- Use kebab-case for files: `user-card.jsx`, `login-form.tsx`
+- Include file extension (.jsx, .tsx) for clarity
+
+## Error Handling
+
+### Component Error Boundaries
+```typescript
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+    return this.props.children;
+  }
+}
+```
+
+## Accessibility Standards
+
+### Semantic HTML
+- Use appropriate HTML elements for content structure
+- Apply ARIA attributes when needed
+- Ensure keyboard navigation support
+- Implement proper focus management
+
+```typescript
+// Example with accessibility in mind
+<button 
+  aria-label="Close modal"
+  onClick={handleClose}
+  type="button"
+>
+  ✕
+</button>
+```
+
+## Testing Practices
+
+### Component Testing
+- Use React Testing Library (RTL) - the standard for 2026
+- Test user interactions and DOM changes, not implementation details
+- Mock external dependencies properly 
+- Include edge case testing for props and state
+
+```typescript
+// Example test structure
+describe('UserCard Component', () => {
+  test('renders user information correctly', () => {
+    const user = { name: 'John Doe', email: 'john@example.com' };
+    render(<UserCard user={user} />);
+    
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('john@example.com')).toBeInTheDocument();
+  });
+});
+```
+
+## Code Documentation
+
+### JSDoc Style
+```typescript
+/**
+ * Fetches user data from the API 
+ * @param {number} userId - The ID of the user to fetch
+ * @returns {Promise<User>} A promise that resolves to the user object
+ * @throws {Error} If the request fails
+ */
+async function fetchUser(userId) {
+  // Implementation
+}
+```
+
+## Configuration Management
+
+### Environment Variables
+- Use `.env` files for environment-specific settings
+- Validate environment variable types and required values at startup
+- Never hardcode sensitive information in the codebase

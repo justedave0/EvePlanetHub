@@ -1,0 +1,80 @@
+---
+name: "Component Development Guidelines"
+type: "rule"
+author: "Cursor IDE Best Practices 2026"
+version: "1.0.0"
+description: |
+  Component development conventions for Cursor IDE projects in 2026.
+  Establishes consistent patterns for React components, styling, and structure.
+---
+
+## React Component Structure
+
+### File Naming
+- Use PascalCase for component names
+- Place components in `src/components/` directory
+- Component files named after their primary export: `UserCard.jsx`, `LoginForm.tsx`
+
+### Component Patterns
+```javascript
+// Functional component with TypeScript
+import React from 'react';
+
+interface UserCardProps {
+  user: {
+    name: string;
+    email: string;
+  };
+  onClick?: () => void;
+}
+
+const UserCard: React.FC<UserCardProps> = ({ user, onClick }) => {
+  return (
+    <div className="user-card" onClick={onClick}>
+      <h3>{user.name}</h3>
+      <p>{user.email}</p>
+    </div>
+  );
+};
+
+export default UserCard;
+```
+
+## Styling Conventions
+
+### CSS/Styled Components
+- Use Tailwind CSS for styling when available (v4+)
+- Implement consistent class naming: `bg-primary`, `text-secondary`
+- Use utility-first approach with consistent spacing system
+- Avoid inline styles
+
+### Component Structure
+- Keep components small and focused
+- Prefer composition over inheritance  
+- Use props for customization
+- Implement proper TypeScript interfaces
+
+## Best Practices
+
+### State Management
+- Use React hooks (useState, useEffect, useContext)
+- Keep component state minimal
+- Separate business logic from UI rendering
+
+### Performance
+- Memoize expensive calculations with useMemo
+- Avoid unnecessary re-renders with useCallback
+- Lazy load components when appropriate
+- Use React.memo for pure components
+
+### Accessibility
+- Add proper ARIA attributes where needed
+- Ensure keyboard navigation support
+- Provide meaningful alt text for images
+- Maintain sufficient color contrast
+
+### Production Reliability
+- All component configuration parameters should be validated
+- Feature flags should be used for experimental or risky component changes
+- Performance metrics should be monitored for component rendering
+- Components should handle error boundaries gracefully

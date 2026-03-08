@@ -1,0 +1,29 @@
+---
+globs: requirements.txt
+alwaysApply: false
+---
+# Requirements.txt Rule
+
+When modifying requirements.txt, always verify that package versions exist on PyPI (https://pypi.org/).
+
+## Verification Process
+
+1. When adding or updating a package version in requirements.txt:
+   - Check if the package name exists on PyPI
+   - Verify that the specified version exists for that package
+   - If version doesn't exist, either:
+     - Remove the version constraint and use latest version (recommended)
+     - Use an alternative version that is known to exist
+
+2. For packages with version constraints (e.g., `package_name==1.2.3`):
+   - Validate that both package name and version exist on PyPI
+   - Ensure the version specified is valid and available
+
+3. Best practices:
+   - Prefer using the latest stable versions when possible
+   - Avoid specifying exact patch versions unless absolutely necessary
+   - Document reasons for pinning specific versions in comments
+
+## Implementation Notes
+
+This rule applies to all modifications to requirements.txt files, ensuring that all package dependencies are valid and can be installed by pip.

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.v1.routes.health import router as health_router
 from api.v1.routes.users import router as users_router
+from api.v1.routes.auth import router as auth_router
 import asyncio
 
 app = FastAPI(
@@ -22,6 +23,7 @@ app.add_middleware(
 # Include routers
 app.include_router(health_router, prefix="/api/v1/health", tags=["Health"])
 app.include_router(users_router, prefix="/api/v1/users", tags=["Users"])
+app.include_router(auth_router, prefix="/api/v1/auth", tags=["Authentication"])
 
 @app.get("/")
 async def root():

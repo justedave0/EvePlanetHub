@@ -1,0 +1,52 @@
+---
+name: "General Code Style and Formatting"
+type: "rule"
+author: "Cursor IDE Best Practices 2026"
+version: "1.0.0"
+description: |
+  General code style guidelines for Cursor IDE projects in 2026.
+  Enforces consistent formatting, naming conventions, and code structure.
+---
+
+## Code Style Guidelines
+
+### General Formatting
+- Use 2 spaces for indentation (no tabs)
+- Always use semicolons for consistency
+- Place opening braces on the same line as the statement
+- Maintain consistent spacing around operators
+- Use camelCase for variables and functions
+- Use PascalCase for class names and components
+
+### Naming Conventions
+- Variables: lowerCamelCase
+- Functions: lowerCamelCase  
+- Classes: PascalCase
+- Constants: UPPER_CASE
+- Files: kebab-case
+- Directories: kebab-case
+
+### Code Structure
+- Separate logical sections with blank lines
+- Keep functions small and focused (max 50 lines)
+- Use meaningful, descriptive names
+- Avoid deep nesting (max 3 levels)
+- Import statements organized in groups:
+  1. Built-in modules
+  2. External libraries  
+  3. Local modules
+
+### Configuration Management
+- ALL numeric values in configuration files must be justified with:
+  - Load testing evidence or performance data
+  - Risk assessment documentation
+  - Rollback plan for production issues
+- Critical configuration parameters should have feature flags for gradual rollouts
+- Configuration validation should be implemented to prevent invalid settings
+- Environment-specific values should be managed through secure, version-controlled configurations
+
+### Comments and Documentation
+- Add JSDoc-style comments for functions with parameters
+- Comment complex logic
+- Remove commented-out code before commit
+- Keep comments up to date with code changes

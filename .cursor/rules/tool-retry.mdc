@@ -1,0 +1,108 @@
+---
+name: "Tool Retry Mechanism"
+type: "rule"
+author: "Cursor IDE Best Practices 2026"
+version: "1.0.0"
+description: |
+  Guidelines for implementing retry mechanisms in Cursor AI agent tool usage.
+  Ensures that when tools fail, they automatically retry until successful
+  to prevent incomplete or failed operations.
+---
+
+## Retry Principle
+
+When any AI agent tool is invoked and results in a failure, the agent must:
+- Automatically retry the operation with exponential backoff
+- Continue retrying until the operation is successful
+- Log retry attempts for debugging and monitoring purposes
+
+## Implementation Strategies
+
+### 1. General Approach
+- All tool calls should be wrapped in retry logic by default
+- Implement exponential backoff (starting with 1 second, doubling on each attempt)
+- Set reasonable maximum retry limits (e.g., 5 retries)
+- Log all retry attempts with clear error context
+
+### 2. Retryable Operations
+The following operations are typically retryable:
+- File system operations (read, write, edit)
+- Network requests and API calls
+- Database interactions
+- Process execution with shell commands
+
+### 3. Non-Retryable Operations  
+The following operations should not be retried:
+- Invalid syntax / malformed requests 
+- Permission errors that won't resolve with retries
+- Configuration errors
+
+## Example Implementation Pattern  
+
+```python
+import time
+import logging
+from typing import Callable, Any, Optional
+
+logger = logging.getLogger(__name__)
+
+def retry_tool_call(tool_func: Callable, max_retries: int = 5, 
+                   base_delay: float = 1.0, backoff_factor: int = 2) -> Any:
+    """
+    Execute a tool function with automatic retries on failure.
+    
+    Args:
+        tool_func: The tool function to execute
+        max_retries: Maximum number of retry attempts
+        base_delay: Initial delay in seconds
+        backoff_factor: Multiplier for delay on each retry
+        
+    Returns:
+        Result of the tool function
+        
+    Raises:
+        Exception: If all retry attempts fail, re-raises the last exception
+    """
+    delay = base_delay
+    last_exception = None
+    
+    for attempt in range(max_retries + 1):
+        try:
+            return tool_func()
+        except Exception as e:
+            last_exception = e
+            if attempt < max_retries:  # Don't wait on the final attempt
+                logger.warning(f"Tool call failed (attempt {attempt + 1}): {str(e)}. "
+                             f"Retrying in {delay} seconds...")
+                time.sleep(delay)
+                delay *= backoff_factor
+            else:
+                logger.error(f"All {max_retries + 1} retry attempts failed for tool call.")
+                raise last_exception
+    return None
+```
+
+## Best Practices
+
+### 1. Logging and Monitoring
+- Every retry attempt should be logged with context
+- Include the specific tool name and parameters in logs
+- Capture error details to aid debugging
+- Track number of retries per operation for monitoring
+
+### 2. Timeout Considerations
+- Set appropriate timeouts for individual operations
+- Don't let retries run indefinitely 
+- Consider setting a maximum total time for all retry attempts
+
+### 3. Avoid Infinite Loops
+- Implement sensible limits on retry counts
+- Distinguish between recoverable and permanent failures
+- Allow human intervention for persistent failures
+
+## Framework Integration
+
+When using Cursor AI within frameworks like FastAPI or React:
+- Wrap tool calls in retry logic before any external operations  
+- Integrate with existing logging systems
+- Implement retry policies that can be configured per-tool

@@ -8,3 +8,7 @@ python-dotenv==1.0.0
 pytest==8.1.1
 httpx==0.25.0
 alembic==1.18.4
+requests==2.31.0
+esipy==1.2.3
+python-jose
+passlib==1.7.4

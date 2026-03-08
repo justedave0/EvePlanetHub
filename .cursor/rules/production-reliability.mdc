@@ -1,0 +1,62 @@
+---
+name: "Production Reliability and Configuration Management"
+type: "rule"
+author: "Cursor IDE Best Practices 2026"
+version: "1.0.0"
+description: |
+  Production reliability guidelines and configuration management practices for Cursor IDE projects in 2026.
+  Establishes critical standards for production stability, configuration changes, and risk assessment.
+---
+
+## Critical Configuration Change Review Principles
+
+### Magic Number Detection and Justification
+- ALL numeric values in configuration files must be questioned and justified
+- Justification should include:
+  - Load testing or performance data
+  - Risk assessment documentation  
+  - Rollback strategy in case of production issues
+  - Monitoring requirements for the specific value
+- Values should be reviewed during code reviews and change management processes
+
+### Connection Pool Management
+- Connection pool sizes must be calculated based on expected concurrent workload
+- Timeout values (connection, request, idle) should align with service dependencies
+- Pool configuration should be validated in staging environments
+- Monitoring metrics for pool usage should be implemented:
+  - Connection count over time
+  - Wait times for connections
+  - Pool exhaustion events
+
+### Security Configuration Standards
+- Sensitive information must not be hardcoded in source files
+- Environment-specific configurations should use secure, version-controlled methods
+- Default security settings should be secure by design
+- All configuration parameters should be validated for type and range
+- Regular auditing of configurations for security vulnerabilities
+
+## Risk Assessment and Change Management
+
+### Configuration Impact Analysis
+- All configuration changes must undergo impact assessment
+- Critical performance parameters require testing in staging before production
+- Changes to resource limits (memory, timeout, connection counts) must have rollback plans
+- Gradual rollout strategies should be implemented for risky numeric values
+
+### Monitoring and Observability
+- Configuration parameters that affect system performance should have monitoring
+- Alert thresholds specific to configuration values should be defined
+- Logs should capture configuration usage for audit purposes
+- Metrics collected should include connection pool utilization, memory consumption, etc.
+
+## Implementation Guidelines
+
+### Feature Flags for Risky Changes
+- Use feature flags for numeric or configuration changes that could impact stability
+- Gradual rollout strategies should be applied to risky settings
+- A/B testing frameworks can be used to validate different configurations
+
+### Version Control and Deployment
+- All configuration files should be tracked in version control with meaningful commit messages
+- Configuration schema validation should be part of the CI pipeline
+- Production deployments should include configuration validation steps

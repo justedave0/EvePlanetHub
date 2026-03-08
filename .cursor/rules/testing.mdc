@@ -1,0 +1,79 @@
+---
+description: |
+alwaysApply: false
+---
+
+## Test Organization
+
+### File Structure
+- Place tests in `src/__tests__/` or `src/tests/` directory
+- Match component/test file names: `UserCard.test.jsx`, `api-handler.spec.ts`
+- Group related tests in folders when appropriate
+
+### Testing Frameworks
+- Use Jest for JavaScript/TypeScript projects  
+- Use React Testing Library for component testing
+- Implement proper test coverage thresholds (minimum 80%)
+- Include integration tests for critical paths
+
+## Test Writing Guidelines
+
+### Test Structure
+```javascript
+describe('UserCard Component', () => {
+  beforeEach(() => {
+    // Setup before each test
+  });
+
+  afterEach(() => {
+    // Cleanup after each test
+  });
+
+  test('renders user name correctly', () => {
+    const { getByText } = render(<UserCard user={{ name: 'John Doe' }} />);
+    expect(getByText('John Doe')).toBeInTheDocument();
+  });
+
+  test('handles click event', () => {
+    const handleClick = jest.fn();
+    const { getByRole } = render(
+      <UserCard user={{ name: 'John Doe' }} onClick={handleClick} />
+    );
+    
+    fireEvent.click(getByRole('button'));
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+## Code Quality Standards
+
+### Test Coverage
+- Aim for 80%+ test coverage
+- Focus on business logic and critical paths
+- Include edge cases and error conditions  
+- Mock external dependencies appropriately
+
+### Configuration Validation Testing
+- All configuration values should be tested for validity
+- Edge cases in numeric configurations should be covered 
+- Environment-specific configurations should be validated
+- Test failure scenarios for invalid configuration settings
+
+### Performance Tests
+- Test component rendering performance
+- Measure API response times
+- Implement proper loading states in tests
+
+## Continuous Integration
+
+### CI/CD Requirements
+- Run tests automatically on commit
+- Fail builds on test failures or coverage drops
+- Include linting and formatting checks
+- Generate coverage reports
+
+### Configuration Testing
+- Configuration validation should be tested as part of CI pipeline  
+- Environment-specific configurations should be validated in staging
+- Test configuration changes against production-like scenarios
